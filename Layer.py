@@ -6,12 +6,15 @@ class Layer:
         self.num_neurons = num_neurons
         self.neurons = []
         #self.layer_id = None
-        for i in range(num_neurons):
+        for i in range(0,num_neurons):
             neuron = Neuron()
             neuron.set_layer(self)
             neuron.set_id(i)
-            if (weights!=None):
-                neuron.initialize_weights(num_inputs)#TODO set the user given weights to the network
+            if (weights!=None):#Set the user given weights to the network
+                print(f'neuron{i}:')
+                print(f'weights:{weights}')
+                print(f'weights[{i}]:{weights[i]}')
+                neuron.set_weights(weights[i])
             else:    
                 neuron.initialize_weights(num_inputs)
             neuron.set_activation_function(activation_function)

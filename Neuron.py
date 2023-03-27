@@ -5,6 +5,7 @@ class Neuron:
         self.inputs = inputs
         self.weights = weights
         self.bias = bias
+        self.net = None
         self.activation_function = activation_function
         self.outputs = None
     
@@ -28,19 +29,25 @@ class Neuron:
     def set_bias(self, bias):
         self.bias = bias
     
+    def get_net(self):
+        return self.net
+
     def set_activation_function(self, activation_function):
         self.activation_function = activation_function
     
+    def derivative(self):
+        x = self.net
+        return np.exp(-x) / (1 + np.exp(-x))**2
+
     def output(self):
         #print(f'self.inputs, self.weights, self.bias{self.inputs, self.weights[0], self.bias}')
         #print(f"Layer id:{self.layer.get_layer_id()} Neuron id:{self.get_id()}")
         if(self.layer.get_layer_id() == 0):#print("The input layer")
             #Input layer weights are 1x1 vector - (this is redundent)
-            weighted_sum = np.dot(self.inputs[self.id].T,self.weights[0]) + self.bias
-        else:
-            #print("Not the input layer")
-            weighted_sum = np.dot(self.inputs, self.weights) + self.bias
-        self.outputs = self.activation_function(weighted_sum)
+            self.net = np.dot(self.inputs[self.id].T,self.weights[0]) + self.bias
+        else:#print("Not the input layer")
+            self.net = np.dot(self.inputs, self.weights) + self.bias
+        self.outputs = self.activation_function(self.net)
         return self.outputs
     
     def initialize_weights(self, num_inputs):
