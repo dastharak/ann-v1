@@ -12,16 +12,16 @@ class NeuralNetwork:
         for i in range(num_layers):
             if i == 0:
                 layer = Layer(layer_sizes[i], None, activation_functions[i],weights[i],input_size,output_size)
-                layer.is_input_layer = True
             else:
                 layer = Layer(layer_sizes[i], layer_sizes[i-1], activation_functions[i],weights[i],input_size,output_size)
+            layer.set_layer_id(i)
             self.layers.append(layer)
 
     def set_inputs(self, inputs):
         self.layers[0].set_inputs(inputs)
 
     def output(self):
-        output = self.layers[0].output()
+        output = self.layers[0].output()#the input layer
         for i in range(1, len(self.layers)):
             self.layers[i].set_inputs(output)
             output = self.layers[i].output()
@@ -36,7 +36,7 @@ class NeuralNetwork:
             nsli = li.get_neurons()
             for nur in nsli:
                 print(f'         |Neuron:{str(nur)}')
-
+        print(f'---------------------------')
 
     '''
         def _get_activation_function(self, name):

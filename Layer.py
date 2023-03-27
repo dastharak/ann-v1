@@ -5,7 +5,7 @@ class Layer:
     def __init__(self, num_neurons, num_inputs, activation_function=lambda x: x,weights=None,input_size=1,output_size=1):
         self.num_neurons = num_neurons
         self.neurons = []
-        self.is_input_layer = False
+        #self.layer_id = None
         for i in range(num_neurons):
             neuron = Neuron()
             neuron.set_layer(self)
@@ -30,5 +30,8 @@ class Layer:
     def output(self):
         return np.array([neuron.output() for neuron in self.neurons])
 
-    def isInputLayer(self):
-        self.is_input_layer
+    def get_layer_id(self):
+        return self.layer_id
+
+    def set_layer_id(self,id):
+        self.layer_id = id

@@ -10,16 +10,21 @@ def test():
     activation_functions = [lambda x: (x), lambda x: 1/(1+np.exp(-x))]#, lambda x: x]
     weights = [1,2,3,4,5]
     input = [1, 0, 1]
+    np.random.seed(42)
     nn = NeuralNetwork(layer_sizes, activation_functions,weights,len(input),2)
 
     # set the inputs to the network
     inputs = np.array(input)
     nn.set_inputs(inputs)
 
+    #infor of network
+    nn.printNetworkSetup()
+
     # calculate the output of the network
     output = nn.output()
 
-    #architecture of network
+
+    #infor of network
     nn.printNetworkSetup()
 
     # print the output
