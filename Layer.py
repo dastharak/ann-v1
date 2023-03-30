@@ -11,9 +11,7 @@ class Layer:
             neuron.set_layer(self)
             neuron.set_id(i)
             if (weights!=None):#Set the user given weights to the network
-                print(f'neuron{i}:')
-                print(f'weights:{weights}')
-                print(f'weights[{i}]:{weights[i]}')
+                print(f'neuron:{i}:weights:{weights}:weights[{i}]:{weights[i]}')
                 neuron.set_weights(weights[i])
             else:    
                 neuron.initialize_weights(num_inputs)
@@ -33,8 +31,8 @@ class Layer:
     def output(self):
         return np.array([neuron.output() for neuron in self.neurons])
 
-    def get_layer_id(self):
+    def get_id(self):
         return self.layer_id
 
-    def set_layer_id(self,id):
+    def set_id(self,id):
         self.layer_id = id

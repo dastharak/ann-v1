@@ -23,8 +23,14 @@ class Neuron:
     def set_inputs(self, inputs):
         self.inputs = inputs
     
+    def get_inputs(self):
+        return self.inputs
+    
     def set_weights(self, weights):
         self.weights = weights
+    
+    def get_weights(self):
+        return self.weights
     
     def set_bias(self, bias):
         self.bias = bias
@@ -42,7 +48,7 @@ class Neuron:
     def output(self):
         #print(f'self.inputs, self.weights, self.bias{self.inputs, self.weights[0], self.bias}')
         #print(f"Layer id:{self.layer.get_layer_id()} Neuron id:{self.get_id()}")
-        if(self.layer.get_layer_id() == 0):#print("The input layer")
+        if(self.layer.get_id() == 0):#print("The input layer")
             #Input layer weights are 1x1 vector - (this is redundent)
             self.net = np.dot(self.inputs[self.id].T,self.weights[0]) + self.bias
         else:#print("Not the input layer")
