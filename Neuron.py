@@ -8,6 +8,7 @@ class Neuron:
         self.net = None
         self.activation_function = activation_function
         self.outputs = None
+        self.deltaw = None
     
     @property
     def weights(self):
@@ -41,9 +42,9 @@ class Neuron:
     def set_activation_function(self, activation_function):
         self.activation_function = activation_function
     
-    def derivative(self):
-        x = self.net
-        return np.exp(-x) / (1 + np.exp(-x))**2
+    def derivative(x):
+        #x = self.net
+        return (np.exp(-x) / (1 + np.exp(-x))**2)
 
     def output(self):
         #print(f'self.inputs, self.weights, self.bias{self.inputs, self.weights[0], self.bias}')
@@ -70,6 +71,12 @@ class Neuron:
 
     def get_id(self):
         return self.id
+    
+    def set_delta(self, delta):
+        self.delta = delta
+
+    def get_delta(self):
+        return self.delta
 
     def __str__(self):
         return f"({self.id}:inputs={self.inputs}, weights={self.weights}, bias={self.bias},outputs={self.outputs}, activation_function={self.activation_function.__name__})"

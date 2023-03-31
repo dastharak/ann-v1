@@ -36,3 +36,6 @@ class Layer:
 
     def set_id(self,id):
         self.layer_id = id
+
+    def set_deltas(self,deltas):
+        self.deltas = deltas
