@@ -10,6 +10,7 @@ class NeuralNetwork:
     def __init__(self, layer_sizes, activation_functions,weights,input_size,output_size):
         self.validateConfiguration(layer_sizes, activation_functions,weights,input_size,output_size)
         self.layers = []
+        self.error = None
         num_layers = len(layer_sizes)
         for i in range(num_layers):
             if i == 0:#input layer,no previous layer, weights are fixed to [1]
@@ -29,12 +30,17 @@ class NeuralNetwork:
             output = self.layers[i].output()
         return output
 
+    def set_error(self,err):
+        self.error = err
+
+    def get_error(self):
+        return self.error
+
     def getNetworkSetup(self):
         strConfig = "\n"
         strConfig += (f'-----------------------------------------------------------')
         strConfig += '\n'
 
-        #print(f'No of Layers:{len(self.layers)}')
         for i in range(0,len(self.layers)):
             li = self.layers[i]
             n = li.get_num_neurons()
@@ -78,11 +84,14 @@ class NeuralNetwork:
         #print(f'output layer id:{output_layer.get_id()}')
         #print(f'targets:{targets}-output_layer.output():{output_layer.output()}')
         output_error = targets - output_layer.output()#d-f(net)
+        self.error = output_error
         #print(f'output_error:{output_error}')
         #print(f'output_layer.get_neurons():{len(output_layer.get_neurons())}')
         output_delta = []
         for i,output_layer_neuron in enumerate(output_layer.get_neurons()):#for each neuron in output layer
-            delta = output_error[i] * Neuron.derivative(output_layer_neuron.net)#d-f(net)*f'(net)
+            #delta = output_error[i] * output_layer_neuron.activation_function.get_derivative(output_layer_neuron.net)#d-f(net)*f'(net)
+            act_fun_diff = output_layer_neuron.activation_function.get_derivative()
+            delta = output_error[i] * act_fun_diff(output_layer_neuron.net)#d-f(net)*f'(net)
             #print(f'output delta:{delta},{type(delta)},{delta.shape}')
             output_layer_neuron.set_deltaw(delta)
             output_delta.append(delta)
@@ -112,7 +121,9 @@ class NeuralNetwork:
                     #print(f'{next_layer_neuron_weights[j]}*{deltaNurone}')
                     sum = next_layer_neuron_weights[j]*deltaNurone
                     #print(f'sum1:{sum}')
-                    sum = Neuron.derivative(hidden_layer_neuron.net)*sum #f'(net)*[Sum(w.delta)]
+                    #sum = hidden_layer_neuron.activation_function.get_derivative(hidden_layer_neuron.net)*sum #f'(net)*[Sum(w.delta)]
+                    act_fun_diff = hidden_layer_neuron.activation_function.get_derivative()
+                    sum = act_fun_diff(hidden_layer_neuron.net)*sum #f'(net)*[Sum(w.delta)]
                     #print(f'delta{hlid}{j}:{sum}')
                     hidden_layer_neuron_delta_sum+=sum
 
@@ -144,3 +155,19 @@ class NeuralNetwork:
             #print(f'<backward()')
 
     
+
+    '''
+    bacth processing
+
+    In batch training, the neural network processes a mini-batch of input examples simultaneously and calculates the forward pass and backward pass for all examples in the mini-batch.
+
+    In your example, you have a 1000x3 matrix of inputs and a 1000x1 vector of outputs. You can split the input matrix and output vector into mini-batches, each with a certain number of input-output pairs. For example, you can use a mini-batch size of 32, which means each mini-batch will contain 32 input-output pairs.
+
+    When training the neural network with a mini-batch size of 32, the first step is to randomly select 32 input-output pairs from the dataset. These input-output pairs are then fed into the neural network simultaneously. The neural network calculates the forward pass for all 32 input examples and computes the loss by comparing the network's output to the true output for all 32 examples.
+
+    Once the loss is computed, the backpropagation algorithm is used to calculate the gradients of the loss with respect to the network's weights. The gradients are then used to update the weights of the network using an optimization algorithm such as stochastic gradient descent.
+
+    After the weights are updated, a new mini-batch of 32 input-output pairs is randomly selected from the dataset, and the process repeats. This continues until all examples in the dataset have been used to update the weights of the network multiple times.
+
+    In summary, during batch training, the network processes a mini-batch of input-output pairs simultaneously, computes the forward pass and backpropagation for all examples in the mini-batch, calculates the gradients of the loss with respect to the network's weights, and updates the weights of the network. The process repeats for multiple epochs until the network converges to a good solution.
+    '''

@@ -54,7 +54,11 @@ class Neuron:
             self.net = np.dot(self.inputs[self.id].T,self.weights[0]) + self.bias
         else:#print("Not the input layer")
             self.net = np.dot(self.inputs, self.weights) + self.bias
-        self.outputs = self.activation_function(self.net)
+            
+        #print(f'self.activation_function{self.activation_function},{type(self.activation_function)}')
+        #print(f'self.activation_function{self.activation_function.get_function},{type(self.activation_function.get_function)}')
+        act_fun = self.activation_function.get_function()
+        self.outputs = act_fun(self.net)
         return self.outputs
     
     def initialize_weights(self, num_inputs):
