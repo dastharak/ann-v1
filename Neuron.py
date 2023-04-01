@@ -72,11 +72,16 @@ class Neuron:
     def get_id(self):
         return self.id
     
-    def set_delta(self, delta):
-        self.delta = delta
+    def set_deltaw(self, deltaw):
+        self.deltaw = deltaw
 
-    def get_delta(self):
-        return self.delta
+    def get_deltaw(self):
+        return self.deltaw
 
     def __str__(self):
-        return f"({self.id}:inputs={self.inputs}, weights={self.weights}, bias={self.bias},outputs={self.outputs}, activation_function={self.activation_function.__name__})"
+        return f"({self.id}:INP={self.inputs}, W={self.weights}, B={self.bias},dW={self.deltaw},OUT={self.outputs})"#, activation_function={self.activation_function.__name__})"
+
+    def data(self):
+        #data = [('{self.id}:inp={self.inputs}, weights={self.weights}, bias={self.bias},deltas={self.deltaw},out={self.outputs}')]
+        data = [(self.id,self.inputs,self.weights,self.bias,self.deltaw,self.outputs)]
+        return data

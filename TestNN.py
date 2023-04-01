@@ -20,21 +20,27 @@ def test():
     nn.set_inputs(inputs)
 
     #infor of network
-    nn.printNetworkSetup()
+    strBefore = nn.getNetworkSetup()
+    out1 = nn.output()
+    for i in range(1,2000):
 
-    # calculate the output of the network
-    output = nn.output()
+        # calculate the output of the network
+        output = nn.output()
 
 
-    #infor of network
-    #nn.printNetworkSetup()
+        print(f'net:{output}')
 
-    print(f'net:{output}')
+        nn.backpropagate(target,0.1)
 
-    nn.backpropagate(target,0.1)
-
+    strAfter = nn.getNetworkSetup()
     # print the output
-    output = nn.output()
-    print(f'net:{output}')
+    out2 = nn.output()
+
+    print(f'NetBefore:{strBefore}')
+    print(f'     Out1:{out1}')
+    print(f' NetAfter:{strAfter}')
+    print(f'     Out2:{out2}')
+    print(f'   Target:{target}')
+
 
 test()
