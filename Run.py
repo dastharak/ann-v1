@@ -1,18 +1,30 @@
 
-import Setup as setup 
-import time
+import Setup as setup
 import IO as io
 import BuildNN as build
+import TrainNN as train
+import NeuralNetwork as nn
 
 def run_script():
 
     logger,args = setup.setup()
-    print('args',args)
 
-    inputs_array,output_array = io.readFile(args.inoutdatafile)
+    inoutputs_array = args.inoutputdata
+    num_of_layers = args.numoflayers
+    activation_functions = args.activationfunctions
+    weights_4_each_layer = args.weights4eachlayer
+    learning_rate = args.learningrate
+    epochs = args.epochs
 
-    build.build(args.numoflayers,inputs_array,output_array)
-    #time.sleep(1)
+    neuralnet = build.build(num_of_layers,weights_4_each_layer,activation_functions)
+    if(learning_rate is None and epochs is None):
+        nn = train.train(neuralnet,inoutputs_array)
+    elif(learning_rate is None):
+        nn = train.train(neuralnet,inoutputs_array,epochs=epochs)
+    elif(epochs is None):
+        nn = train.train(neuralnet,inoutputs_array,learning_rate=learning_rate)
+        
+
 
     return
 

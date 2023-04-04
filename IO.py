@@ -20,8 +20,6 @@ def readFile(fileName):
             inputs.append(input_row)
             output.append(output_row)
 
-        #print(f'inputs{inputs} : output{output}')
-
         inputs_array = np.array(inputs)
         output_array = np.array(output)
         

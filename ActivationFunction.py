@@ -32,9 +32,8 @@ class ActivationFunction:
         return 1 / (1 + np.exp(-x))
 
     def sigmoid_derivative(self, x):
-        #return x * (1 - x)
-        #return (np.exp(-x) / (1 + np.exp(-x))**2)
-        X = 1 / (1 + np.exp(-x))
+        #naive derivative (np.exp(-x) / (1 + np.exp(-x))**2)
+        X = 1 / (1 + np.exp(-x))# writing the same i.t.o sigmoid
         return X*(1-X)
 
     def relu(self, x):

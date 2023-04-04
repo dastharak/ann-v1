@@ -7,16 +7,16 @@ modulename = __name__
 logger = logging.getLogger(modulename)
 
 class NeuralNetwork:
-    def __init__(self, layer_sizes, activation_functions,weights,input_size,output_size):
-        self.validateConfiguration(layer_sizes, activation_functions,weights,input_size,output_size)
+    def __init__(self, layer_sizes, activation_functions,weights):#,input_size,output_size):
+        self.validateConfiguration(layer_sizes, activation_functions,weights)#,input_size,output_size)
         self.layers = []
         self.error = None
         num_layers = len(layer_sizes)
         for i in range(num_layers):
             if i == 0:#input layer,no previous layer, weights are fixed to [1]
-                layer = Layer(layer_sizes[i], None, activation_functions[i],None,input_size,output_size)
+                layer = Layer(layer_sizes[i], None, activation_functions[i],None)#,input_size,output_size)
             else:
-                layer = Layer(layer_sizes[i], layer_sizes[i-1], activation_functions[i],weights[i],input_size,output_size)
+                layer = Layer(layer_sizes[i], layer_sizes[i-1], activation_functions[i],weights[i])#,input_size,output_size)
             layer.set_id(i)
             self.layers.append(layer)
 
@@ -62,14 +62,14 @@ class NeuralNetwork:
         strConfig += '\n'
         return strConfig
 
-    def validateConfiguration(self,layer_sizes, activation_functions,weights,input_size,output_size):
+    def validateConfiguration(self,layer_sizes, activation_functions,weights):#,input_size,output_size):
         if(len(layer_sizes)!=len(activation_functions)):
-            print(f'activation functions are not matching for number of layers')
+            print(f'activation functions({len(activation_functions)}) are not matching for number of layers({len(layer_sizes)})')
             raise ValueError
         if(weights!=None):
             for i in range(1,len(layer_sizes)):
                 if len(weights[i]) != layer_sizes[i]:
-                    print(f'weights matrix and neurons count in layer {i} do not match')
+                    print(f'Weights matrix {weights[i]} and neurons count in layer {i} ({layer_sizes[i]}) do not match')
                     raise ValueError
             for i in range(1,len(layer_sizes)):#check the weights and previous layer neuron counts
                 for j in range (0,len(weights[i])):

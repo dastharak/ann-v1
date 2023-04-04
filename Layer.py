@@ -2,16 +2,14 @@ import numpy as np
 from Neuron import Neuron
 
 class Layer:
-    def __init__(self, num_neurons, num_inputs, activation_function=lambda x: x,weights=None,input_size=1,output_size=1):
+    def __init__(self, num_neurons, num_inputs, activation_function=lambda x: x,weights=None):#,input_size=1,output_size=1):
         self.num_neurons = num_neurons
         self.neurons = []
-        #self.layer_id = None
         for i in range(0,num_neurons):
             neuron = Neuron()
             neuron.set_layer(self)
             neuron.set_id(i)
             if (weights!=None):#Set the user given weights to the network
-                print(f'neuron:{i}:weights:{weights}:weights[{i}]:{weights[i]}')
                 neuron.set_weights(weights[i])
             else:    
                 neuron.initialize_weights(num_inputs)

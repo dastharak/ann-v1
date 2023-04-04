@@ -47,16 +47,12 @@ class Neuron:
         return (np.exp(-x) / (1 + np.exp(-x))**2)
 
     def output(self):
-        #print(f'self.inputs, self.weights, self.bias{self.inputs, self.weights[0], self.bias}')
-        #print(f"Layer id:{self.layer.get_layer_id()} Neuron id:{self.get_id()}")
         if(self.layer.get_id() == 0):#print("The input layer")
             #Input layer weights are 1x1 vector - (this is redundent)
             self.net = np.dot(self.inputs[self.id].T,self.weights[0]) + self.bias
         else:#print("Not the input layer")
             self.net = np.dot(self.inputs, self.weights) + self.bias
             
-        #print(f'self.activation_function{self.activation_function},{type(self.activation_function)}')
-        #print(f'self.activation_function{self.activation_function.get_function},{type(self.activation_function.get_function)}')
         act_fun = self.activation_function.get_function()
         self.outputs = act_fun(self.net)
         return self.outputs
