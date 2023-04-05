@@ -23,6 +23,8 @@ def run_script():
         nn = train.train(neuralnet,inoutputs_array,epochs=epochs)
     elif(epochs is None):
         nn = train.train(neuralnet,inoutputs_array,learning_rate=learning_rate)
+    if(learning_rate is not None and epochs is not None):
+        nn = train.train(neuralnet,inoutputs_array,learning_rate,epochs)
         
 
 

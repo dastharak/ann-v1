@@ -99,7 +99,7 @@ class NeuralNetwork:
             #if(np.isnan(output_layer_neuron.net) or np.isnan(act_fun_diff(output_layer_neuron.net))):    
             #    print(f'output_layer_neuron.net:{output_layer_neuron.net}')
             #    return#break
-            logger.debug(f'output_error[i]:{output_error[i]} * act_fun_diff(output_layer_neuron.net):{(output_layer_neuron.net)}')
+            logger.debug(f'output_error[i]:{output_error[i]} * output_layer_neuron.net:{(output_layer_neuron.net)}')
             delta = output_error[i] * act_fun_diff(output_layer_neuron.net)#d-f(net)*f'(net)
             logger.debug(f'delta:{delta}')
             output_layer_neuron.set_deltaw(delta)
