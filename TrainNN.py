@@ -28,6 +28,7 @@ def train(nn,inoutputs_array=[],learning_rate=0.1,epochs=1000):
     out1 = nn.output()
     output_size = len(y)
     err_init = sum(abs(out1-y))/output_size
+    logger.info(f'err_init:{err_init}')
     nn.backpropagate(y[0],learning_rate)
     print(f'|{convert_frac_to_symbols(err_init,err_init)}%:ep.{0}')
     for i in range(1,epochs):  #):# 
@@ -40,11 +41,13 @@ def train(nn,inoutputs_array=[],learning_rate=0.1,epochs=1000):
         nn.backpropagate(y[k],learning_rate)
 
         #err = nn.get_error()
-        if(i%(epochs/25) == 0 ):
+        if(i%(epochs/100) == 0 ):
             err_avg = ((sum(abs(output-y))/output_size)) #*100)/err_init
             print(f'|{convert_frac_to_symbols(err_avg,err_init)}%:ep.{i}')
+            logger.info(f'err_avg:{err_avg}')
+
     
-    print(f'ee:{err_avg}')
+    #print(f'ee:{err_avg}')
     # record end time
     end_time = time.time()
 

@@ -46,7 +46,8 @@ class ActivationFunction:
         return np.tanh(x)
 
     def tanh_derivative(self, x):
-        return 1 - np.square(x)
+        tanhX = np.tanh(x)# writing the same i.t.o tanh
+        return 1 - np.square(tanhX)
 
     def identity(self, x):
         return x

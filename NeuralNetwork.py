@@ -1,7 +1,7 @@
 import numpy as np
 import logging
 from Layer import Layer
-from Neuron import Neuron
+import math
 
 modulename = __name__
 logger = logging.getLogger(modulename)
@@ -38,18 +38,22 @@ class NeuralNetwork:
 
     def getNetworkSetup(self):
         strConfig = "\n"
-        strConfig += (f'-----------------------------------------------------------')
+        strConfig += (f'================================================================================')
         strConfig += '\n'
 
         for i in range(0,len(self.layers)):
             li = self.layers[i]
             n = li.get_num_neurons()
-            strConfig += (f'Layer {i}  |Neurons:{n}')
-            strConfig += '\n'
+            strConfig += (f'Layer {i}  |Neurons:{n}|')
+            strConfig +=   '\n-----------------\n'
             nsli = li.get_neurons()
             for nur in nsli:
-                strConfig += (f'         |Neuron:{str(nur)}')
+                s = str(nur)
+                strConfig += (f'         |Neuron:{s}|')
                 strConfig += '\n'
+                
+            s = '' if (i+1 == len(self.layers)) else (''.join(['-' for i in range(len(s))])+'\n')
+            strConfig += s
 
         # Determine the maximum length of each column
         #col_width = [max(len(str(x)) for x in col) for col in zip(*data)]
@@ -58,13 +62,13 @@ class NeuralNetwork:
         #for row in data:
             #print('  '.join('{:<{}}'.format(str(row[i]), col_width[i]) for i in range(len(row))))
 
-        strConfig += (f'-----------------------------------------------------------')
+        strConfig += (f'================================================================================')
         strConfig += '\n'
         return strConfig
 
     def validateConfiguration(self,layer_sizes, activation_functions,weights):#,input_size,output_size):
         if(len(layer_sizes)!=len(activation_functions)):
-            print(f'activation functions({len(activation_functions)}) are not matching for number of layers({len(layer_sizes)})')
+            print(f'Number of activation functions({len(activation_functions)}) do not match to number of layers({len(layer_sizes)})')
             raise ValueError
         if(weights!=None):
             for i in range(1,len(layer_sizes)):
@@ -74,7 +78,7 @@ class NeuralNetwork:
             for i in range(1,len(layer_sizes)):#check the weights and previous layer neuron counts
                 for j in range (0,len(weights[i])):
                     if len(weights[i][j]) != layer_sizes[i-1]:
-                        print(f'weights vector size of layer {i} nueron {j} and neurons count in layer {i-1} do not match')
+                        print(f'Weights vector size of layer {i} nueron {j} and neurons count in layer {i-1} do not match')
                         raise ValueError                    
 
     def backpropagate(self, targets, learning_rate):
@@ -85,14 +89,19 @@ class NeuralNetwork:
         #print(f'targets:{targets}-output_layer.output():{output_layer.output()}')
         output_error = targets - output_layer.output()#d-f(net)
         self.error = output_error
+        logger.info(f'output_error:{output_error}')
         #print(f'output_error:{output_error}')
         #print(f'output_layer.get_neurons():{len(output_layer.get_neurons())}')
         output_delta = []
         for i,output_layer_neuron in enumerate(output_layer.get_neurons()):#for each neuron in output layer
             #delta = output_error[i] * output_layer_neuron.activation_function.get_derivative(output_layer_neuron.net)#d-f(net)*f'(net)
             act_fun_diff = output_layer_neuron.activation_function.get_derivative()
+            #if(np.isnan(output_layer_neuron.net) or np.isnan(act_fun_diff(output_layer_neuron.net))):    
+            #    print(f'output_layer_neuron.net:{output_layer_neuron.net}')
+            #    return#break
+            logger.debug(f'output_error[i]:{output_error[i]} * act_fun_diff(output_layer_neuron.net):{(output_layer_neuron.net)}')
             delta = output_error[i] * act_fun_diff(output_layer_neuron.net)#d-f(net)*f'(net)
-            #print(f'output delta:{delta},{type(delta)},{delta.shape}')
+            logger.debug(f'delta:{delta}')
             output_layer_neuron.set_deltaw(delta)
             output_delta.append(delta)
         
